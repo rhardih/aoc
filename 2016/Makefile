@@ -7,5 +7,8 @@
 3p1:
 	gcc -o aoc 3p1.c && ./aoc < 3.in
 
+3p2:
+	gcc -o aoc 3p2.c && ./aoc < 3.in
+
 clean :
 	rm -f aoc *.o
