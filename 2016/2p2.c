@@ -21,25 +21,25 @@ int main(int argc, char const *argv[])
   char in;
   char code[] = "12345";
   int code_index = 0;
-  int x_pos = 0;
-  int y_pos = 2;
+  int col = 0;
+  int row = 2;
 
   while (scanf("%c", &in) != EOF) {
     switch (in) {
       case 'U':
-        if (y_pos > 0) y_pos -= moves[x_pos][y_pos - 1];
+        if (row > 0) row -= moves[row - 1][col];
         break;
       case 'R':
-        if (x_pos < 4) x_pos += moves[x_pos + 1][y_pos];
+        if (col < 4) col += moves[row][col + 1];
         break;
       case 'D':
-        if (y_pos < 4) y_pos += moves[x_pos][y_pos + 1];
+        if (row < 4) row += moves[row + 1][col];
         break;
       case 'L':
-        if (x_pos > 0) x_pos -= moves[x_pos - 1][y_pos];
+        if (col > 0) col -= moves[row][col - 1];
         break;
       case '\n':
-        code[code_index] = keypad[x_pos][y_pos];
+        code[code_index] = keypad[row][col];
         code_index++;
         break;
     }
