@@ -19,6 +19,9 @@
 4p1:
 	gcc -o aoc 4p1.c && ./aoc < 4.in
 
+4p2:
+	gcc -o aoc 4p2.c && ./aoc < 4.in | grep "north"
+
 OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/Cellar/openssl/1.0.2j/lib/pkgconfig/ pkg-config --cflags --libs openssl`
 
 5p1:
