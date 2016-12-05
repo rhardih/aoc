@@ -16,5 +16,10 @@
 3p2:
 	gcc -o aoc 3p2.c && ./aoc < 3.in
 
+OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/Cellar/openssl/1.0.2j/lib/pkgconfig/ pkg-config --cflags --libs openssl`
+
+5p1:
+	gcc $(OSSLFLAGS) -o aoc 5p1.c && ./aoc
+
 clean :
 	rm -f aoc *.o
