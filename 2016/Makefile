@@ -21,5 +21,8 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/Cellar/openssl/1.0.2j/lib/pkgconfig/ pk
 5p1:
 	gcc $(OSSLFLAGS) -o aoc 5p1.c && ./aoc
 
+5p2:
+	gcc $(OSSLFLAGS) -o aoc 5p2.c && ./aoc
+
 clean :
 	rm -f aoc *.o
