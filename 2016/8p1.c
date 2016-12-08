@@ -5,7 +5,7 @@ int main(int argc, char const *argv[])
 {
   char buf[100] = "";
   int display[6][50] = { 0 };
-  int lit_pixels = 0, i, w, h, tmp, amount, row, col, ret;
+  int lit_pixels = 0, i, w, h, tmp, amount, row, col;
 
   while(fgets(buf, 100, stdin) != NULL)
   {
