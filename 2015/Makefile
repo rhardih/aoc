@@ -7,5 +7,8 @@
 2p1:
 	gcc -o aoc 2p1.c && ./aoc < 2.in
 
+2p2:
+	gcc -o aoc 2p2.c && ./aoc < 2.in
+
 clean :
 	rm -f aoc *.o
