@@ -51,5 +51,8 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/Cellar/openssl/1.0.2j/lib/pkgconfig/ pk
 9p1:
 	gcc -o aoc 9p1.c && ./aoc < 9.in
 
+9p2:
+	gcc -o aoc 9p2.c && ./aoc < 9.in
+
 clean :
 	rm -f aoc *.o
