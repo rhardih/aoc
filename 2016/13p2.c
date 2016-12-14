@@ -147,6 +147,7 @@ int main(int argc, char const *argv[])
   }
 
   bfs(graph, graph[1][1]);
+  office[31][39] = 'X';
 
   for (y = 0; y < YMAX; y++)
   {
@@ -163,6 +164,7 @@ int main(int argc, char const *argv[])
     printf("\n");
   }
 
+  printf("Fewest number of steps required: %d\n", graph[31][39]->distance);
   printf("Reachable locations in 50 steps: %d\n", locations);
 
   return 0;
