@@ -19,6 +19,7 @@ void ll_append(ll_t *list, ll_node_t *node);
 ll_node_t *ll_remove_tail(ll_t *list);
 ll_node_t *ll_remove_head(ll_t *list);
 int ll_empty(ll_t *list);
+ll_node_t *ll_find(ll_t *list, void *value, int (*finder)(void *, void *));
 void ll_print(ll_t *list, void (*printer)(void *));
 
 #endif

@@ -75,6 +75,20 @@ int ll_empty(ll_t *list) {
   return list->first == NULL;
 }
 
+ll_node_t *ll_find(ll_t *list, void *value, int (*finder)(void *, void *)) {
+  ll_node_t *current = list->first;
+
+  while (current != NULL) {
+    if (finder(current->value, value)) {
+      break;
+    }
+
+    current = current->next;
+  }
+
+  return current;
+}
+
 void ll_print(ll_t *list, void (*printer)(void *)) {
   ll_node_t *current = list->first;
 
