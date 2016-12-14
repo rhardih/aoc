@@ -1,3 +1,6 @@
+ll.o: ll.c ll.h
+	gcc -c ll.c
+
 1p1:
 	gcc -o aoc 1p1.c && ./aoc < 1.in
 
@@ -66,5 +69,11 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/Cellar/openssl/1.0.2j/lib/pkgconfig/ pk
 13p1:
 	gcc -o aoc 13p1.c && ./aoc
 
-clean :
-	rm -f aoc *.o
+13p2: ll.o
+	gcc -o aoc 13p2.c ll.o && ./aoc
+
+test: ll.o
+	gcc -o test test.c ll.o && ./test
+
+clean:
+	rm -f aoc *.o test
