@@ -78,6 +78,9 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/Cellar/openssl/1.0.2j/lib/pkgconfig/ pk
 14p1:
 	gcc $(OSSLFLAGS) -o aoc 14p1.c && ./aoc
 
+14p2:
+	gcc $(OSSLFLAGS) -o aoc 14p2.c && ./aoc
+
 test: ll.o
 	gcc -o test test.c ll.o && ./test
 
