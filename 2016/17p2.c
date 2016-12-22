@@ -8,11 +8,6 @@
 
 #define INPUT "veumntbg"
 
-// first example fails somehow giving 366 steps
-/*#define INPUT "ihgpwlah"*/
-/*#define INPUT "kglvqrro"*/
-/*#define INPUT "ulqzkmiv"*/
-
 #define MD5_LEN 33
 
 enum { UP = -6, DOWN = 6, LEFT = -1, RIGHT = 1 };
@@ -116,7 +111,7 @@ void md5(char *s, char *res) {
 }
 
 int find_path(int pos, char *path, int steps) {
-  int sp = 0, tmp;
+  int lp = 0, tmp;
   char md5h[MD5_LEN];
   char *buf = malloc((steps + 8 + 1) * sizeof(char));
   int up_ok, down_ok, left_ok, right_ok, only_down, only_right;
@@ -140,34 +135,42 @@ int find_path(int pos, char *path, int steps) {
   if (up_ok) {
     sprintf(buf, "%s%c", path, 'U');
 
-    if ((tmp = find_path(pos + UP, buf, steps + 1)) > sp)
-      sp = tmp;
+    if ((tmp = find_path(pos + UP, buf, steps + 1)) > lp)
+      lp = tmp;
   }
 
   if (pos + DOWN != ENDPOS && down_ok) {
     sprintf(buf, "%s%c", path, 'D');
 
-    if ((tmp = find_path(pos + DOWN, buf, steps + 1)) > sp)
-      sp = tmp;
+    if ((tmp = find_path(pos + DOWN, buf, steps + 1)) > lp)
+      lp = tmp;
   }
 
   if (left_ok) {
     sprintf(buf, "%s%c", path, 'L');
 
-    if ((tmp = find_path(pos + LEFT, buf, steps + 1)) > sp)
-      sp = tmp;
+    if ((tmp = find_path(pos + LEFT, buf, steps + 1)) > lp)
+      lp = tmp;
   }
 
   if (pos + RIGHT != ENDPOS && right_ok) {
     sprintf(buf, "%s%c", path, 'R');
 
-    if ((tmp = find_path(pos + RIGHT, buf, steps + 1)) > sp)
-      sp = tmp;
+    if ((tmp = find_path(pos + RIGHT, buf, steps + 1)) > lp)
+      lp = tmp;
+  }
+
+  // All above was dead ends and moving to the exit is still a possibility
+  if (lp == 0) {
+    if ((pos + DOWN == ENDPOS && down_ok) ||
+        (pos + RIGHT == ENDPOS && right_ok)) {
+      return steps + 1;
+    }
   }
 
   free(buf);
 
-  return sp;
+  return lp;
 }
 
 int main(int argc, char const *argv[])
@@ -175,10 +178,6 @@ int main(int argc, char const *argv[])
   int steps = find_path(STARTPOS, "", 0);
 
   printf("The longest path is %d steps\n", steps);
-
-  /*assert(steps == 370);*/
-  /*assert(steps == 492);*/
-  /*assert(steps == 830);*/
 
   return 0;
 }
