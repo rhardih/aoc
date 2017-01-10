@@ -1,6 +1,9 @@
 ll.o: ll.c ll.h
 	gcc -c ll.c
 
+bst.o: bst.c bst.h
+	gcc -c bst.c
+
 1p1:
 	gcc -o aoc 1p1.c && ./aoc < 1.in
 
@@ -105,6 +108,9 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/Cellar/openssl/1.0.2j/lib/pkgconfig/ pk
 18p2:
 	gcc -o aoc 18p2.c && ./aoc < 18.in
 
+20p1: bst.o
+	gcc -o aoc 20p1.c bst.o && ./aoc < 20.in
+
 21p1:
 	gcc -o aoc 21p1.c && ./aoc < 21.in
 
@@ -123,8 +129,8 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/Cellar/openssl/1.0.2j/lib/pkgconfig/ pk
 24p2: ll.o
 	gcc -o aoc 24p2.c ll.o && ./aoc < 24.in
 
-test: ll.o
-	gcc -o test test.c ll.o && ./test
+test: ll.o bst.o
+	gcc -o test test.c ll.o bst.o && ./test
 
 clean:
 	rm -f aoc *.o test
