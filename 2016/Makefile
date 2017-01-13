@@ -111,6 +111,9 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/Cellar/openssl/1.0.2j/lib/pkgconfig/ pk
 20p1: bst.o
 	gcc -o aoc 20p1.c bst.o && ./aoc < 20.in
 
+20p2:
+	gcc -o aoc 20p2.c && sort -n 20.in | ./aoc
+
 21p1:
 	gcc -o aoc 21p1.c && ./aoc < 21.in
 
