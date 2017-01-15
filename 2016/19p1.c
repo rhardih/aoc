@@ -32,6 +32,13 @@
  * presents?
  */
 
+// After reviewing other solutions, it would appear this is an instance of the
+// "Josephus problem", which can be solved conveniently in an analytical way,
+// not to different from the below solution.
+//
+// https://en.wikipedia.org/wiki/Josephus_problem
+// https://www.youtube.com/watch?v=uCsD3ZGzMgE
+
 #include <stdio.h>
 #include <stdlib.h>
 
