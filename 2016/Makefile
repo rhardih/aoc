@@ -141,5 +141,7 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/Cellar/openssl/1.0.2j/lib/pkgconfig/ pk
 test: ll.o bst.o
 	gcc -o test test.c ll.o bst.o && ./test
 
+.PHONY: clean
+
 clean:
 	rm -f aoc *.o test
