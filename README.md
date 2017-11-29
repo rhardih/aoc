@@ -13,7 +13,9 @@ correct input to its resulting executable.
 
 ---
 
-Notes:
+## Notes
+
+### 2016
 
 Day 5 and 14 uses md5 from libssl and thus relies on openssl being installed, as
 well as pkg-config to set flags.
