@@ -1,14 +1,7 @@
-1p1:
-	gcc -o aoc 1p1.c && ./aoc < 1.in
+%:
+	gcc -o aoc $@.c && ./aoc < ${shell echo "${@}" | sed -E -e "s/^([0-9]+)p[0-9]$$/\1/"}.in
 
-1p2:
-	gcc -o aoc 1p2.c && ./aoc < 1.in
+.PHONY: clean
 
-2p1:
-	gcc -o aoc 2p1.c && ./aoc < 2.in
-
-2p2:
-	gcc -o aoc 2p2.c && ./aoc < 2.in
-
-clean :
-	rm -f aoc *.o
+clean:
+	rm -f aoc *.o test
