@@ -17,10 +17,14 @@ correct input to its resulting executable.
 
 ### 2016
 
-Day 5 and 14 uses md5 from libssl and thus relies on openssl being installed, as
-well as pkg-config to set flags.
+Day 5 and 14 uses md5 from libssl.
 
 ### 2015
 
-Day 4 uses md5 from libssl and thus relies on openssl being installed, as well
-as pkg-config to set flags.
+Day 4 uses md5 from libssl.
+
+## Dependencies
+
+Install *libssl* and *pkg-config* with Homebrew:
+
+`brew install openssl pkg-config`
