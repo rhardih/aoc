@@ -19,3 +19,8 @@ correct input to its resulting executable.
 
 Day 5 and 14 uses md5 from libssl and thus relies on openssl being installed, as
 well as pkg-config to set flags.
+
+### 2015
+
+Day 4 uses md5 from libssl and thus relies on openssl being installed, as well
+as pkg-config to set flags.
