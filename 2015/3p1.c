@@ -36,7 +36,7 @@ static unsigned int grid[16385][16385];
 
 int main(int argc, char const *argv[])
 {
-  unsigned int x = 8192, y = 8192, houses = 0;
+  unsigned int x = 8192, y = 8192, houses = 1;
   char direction;
 
 
