@@ -35,15 +35,17 @@
 
 static unsigned int grid[1000][1000];
 
+// Longest line in input is 32 characters + newline
+#define MAX_LINE_LENGTH 33
+
 int main(int argc, char const *argv[])
 {
-  // longest line in input is 32 characters, plus a newline
-  char *buf = malloc(34 * sizeof(char));
+  char *buf = malloc(MAX_LINE_LENGTH * sizeof(char));
   char instruction[9];
   unsigned int x0, y0, x1, y1;
   int lit = 0;
 
-  while(fgets(buf, 34, stdin) != NULL)
+  while(fgets(buf, MAX_LINE_LENGTH + 1, stdin) != NULL)
   {
     if (sscanf(buf, "turn %s %u,%u through %u,%u", instruction, &x0, &y0, &x1,
           &y1) == 5)
@@ -52,9 +54,9 @@ int main(int argc, char const *argv[])
 
       strcmp(instruction, "on") == 0 ? (val = 1) : (val = 0);
 
-      for (unsigned int x = x0; x < x1; ++x)
+      for (unsigned int x = x0; x <= x1; ++x)
       {
-        for (unsigned int y = 0; y < y1; ++y)
+        for (unsigned int y = y0; y <= y1; ++y)
         {
           grid[x][y] = val;
         }
@@ -62,9 +64,9 @@ int main(int argc, char const *argv[])
     }
     else if (sscanf(buf, "toggle %u,%u through %u,%u", &x0, &y0, &x1, &y1) == 4)
     {
-      for (unsigned int x = x0; x < x1; ++x)
+      for (unsigned int x = x0; x <= x1; ++x)
       {
-        for (unsigned int y = 0; y < y1; ++y)
+        for (unsigned int y = y0; y <= y1; ++y)
         {
           grid[x][y] = grid[x][y] == 1 ? 0 : 1;
         }
