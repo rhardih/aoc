@@ -50,26 +50,44 @@
 int main(int argc, char const *argv[])
 {
   char buf[INPUT_SIZE];
-  int sum = 0;
+  int sum = 0, tmp;
 
   fgets(buf, INPUT_SIZE + 1, stdin);
 
-  for (size_t i = 0, j, k; i < INPUT_SIZE; ++i)
+  for (size_t i = 0, j, k, l; i < INPUT_SIZE; ++i)
   {
     j = (i + 1) % INPUT_SIZE;
-    k = i;
+    k = -1;
+    l = 0;
 
-    while (buf[i] == buf[j])
+    tmp = buf[i] - '0';
+
+    while (buf[i] == buf[j] && j != k)
     {
-      if (k == i)
-        sum += buf[i] - '0';
+      printf("buf[%zu] = %c, buf[%zu] = %c\n", i, buf[i], j, buf[j]);
 
-      sum += buf[j] - '0';
+      // Set index of the first digit used in sum to avoid using it twice
+      if (k == -1)
+        k = i;
+
+      // Add digit value to already stored value of i'th digit
+      tmp += buf[j] - '0';
+
+      // Move j one step, wrapping around on the end
       j = (j + 1) % INPUT_SIZE;
-      k++;
+      l++;
     }
 
-    i = k + 1;
+    // If any sub sum was made, add it to total
+    if (tmp > buf[i] - '0')
+    {
+      sum += tmp;
+
+      printf("sum: %d\n", sum);
+
+      // Advance i past what was already summed
+      i += l;
+    }
   }
 
   printf("The sum of all next-matching digits: %d\n", sum);
