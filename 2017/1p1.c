@@ -54,15 +54,22 @@ int main(int argc, char const *argv[])
 
   fgets(buf, INPUT_SIZE + 1, stdin);
 
-  for (size_t i = 0, j; i < INPUT_SIZE; ++i)
+  for (size_t i = 0, j, k; i < INPUT_SIZE; ++i)
   {
     j = (i + 1) % INPUT_SIZE;
+    k = i;
 
     while (buf[i] == buf[j])
     {
+      if (k == i)
+        sum += buf[i] - '0';
+
       sum += buf[j] - '0';
       j = (j + 1) % INPUT_SIZE;
+      k++;
     }
+
+    i = k + 1;
   }
 
   printf("The sum of all next-matching digits: %d\n", sum);
