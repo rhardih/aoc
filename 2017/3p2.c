@@ -61,6 +61,23 @@
  * What is the first value written that is larger than your puzzle input?
  */
 
+// Afterthoughts:
+//
+// This problem could have been solved without any code, looking up the solution
+// on oeis.org.
+//
+// Doing a search for the first eight terms; 1,1,2,4,5,10,11, gives the result:
+//
+// "Square spiral of sums of selected preceding terms, starting at 1."
+//
+// https://oeis.org/A141481
+//
+// With the sequence already generated and available at:
+//
+// https://oeis.org/A141481/b141481.txt
+//
+// *Make a mental note to check oeis.org in the future for sequence problems.
+
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
