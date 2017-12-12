@@ -56,10 +56,10 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig pkg-config --
 	gcc $(OSSLFLAGS) -o aoc 17p2.c && ./aoc
 
 19p1:
-	gcc -o aoc 19p1.c ll.o && ./aoc
+	gcc -o aoc 19p1.c && ./aoc
 
 19p2:
-	gcc -o aoc 19p2.c ll.o && ./aoc
+	gcc -o aoc 19p2.c && ./aoc
 
 20p1: bst.o
 	gcc -o aoc 20p1.c bst.o && ./aoc < 20.in
