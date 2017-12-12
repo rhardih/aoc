@@ -1,5 +1,8 @@
-ll.o: ll.c ll.h
-	gcc -c ll.c
+ll.o:
+	pushd ../util && make ll.o && popd
+
+LLFLAGS := "-I../util"
+LLOBJ := "../util/ll.o"
 
 bst.o: bst.c bst.h
 	gcc -c bst.c
@@ -23,19 +26,19 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig pkg-config --
 	gcc -o aoc 8p2.c && ./aoc < 8.in | gsed 's/0/ /g'
 
 10p1: ll.o
-	gcc -o aoc 10p1.c ll.o && ./aoc < 10.in
+	gcc $(LLFLAGS) -o aoc 10p1.c $(LLOBJ) && ./aoc < 10.in
 
 10p2: ll.o
-	gcc -o aoc 10p2.c ll.o && ./aoc < 10.in
+	gcc $(LLFLAGS) -o aoc 10p2.c ll.o && ./aoc < 10.in
 
 11p1: ll.o
-	gcc -o aoc 11p1.c ll.o && ./aoc
+	gcc $(LLFLAGS) -o aoc 11p1.c $(LLOBJ) && ./aoc
 
 13p1:
 	gcc -o aoc 13p1.c && ./aoc
 
 13p2: ll.o
-	gcc -o aoc 13p2.c ll.o && ./aoc
+	gcc $(LLFLAGS) -o aoc 13p2.c $(LLOBJ) && ./aoc
 
 14p1:
 	gcc $(OSSLFLAGS) -o aoc 14p1.c && ./aoc
@@ -65,16 +68,16 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig pkg-config --
 	gcc -o aoc 20p2.c && sort -n 20.in | ./aoc
 
 22p2: ll.o
-	gcc -o aoc 22p2.c ll.o && ./aoc < 22.in
+	gcc $(LLFLAGS) -o aoc 22p2.c $(LLOBJ) && ./aoc < 22.in
 
 24p1: ll.o
-	gcc -o aoc 24p1.c ll.o && ./aoc < 24.in
+	gcc $(LLFLAGS) -o aoc 24p1.c $(LLOBJ) && ./aoc < 24.in
 
 24p2: ll.o
-	gcc -o aoc 24p2.c ll.o && ./aoc < 24.in
+	gcc $(LLFLAGS) -o aoc 24p2.c $(LLOBJ) && ./aoc < 24.in
 
 test: ll.o bst.o
-	gcc -o test test.c ll.o bst.o && ./test
+	gcc $(LLFLAGS) -o test test.c $(LLOBJ) bst.o && ./test
 
 .PHONY: clean
 
