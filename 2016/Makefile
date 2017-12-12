@@ -76,10 +76,10 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig pkg-config --
 24p2: ll.o
 	gcc $(LLFLAGS) -o aoc 24p2.c $(LLOBJ) && ./aoc < 24.in
 
-test: ll.o bst.o
-	gcc $(LLFLAGS) -o test test.c $(LLOBJ) bst.o && ./test
+test: bst.o
+	gcc -o test test.c bst.o && ./test
 
-.PHONY: clean
+.PHONY: clean test
 
 clean:
 	rm -f aoc *.o test
