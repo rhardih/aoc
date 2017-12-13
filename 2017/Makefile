@@ -17,6 +17,9 @@ LLOBJ := "../util/ll.o"
 12p1: ll.o
 	gcc $(LLFLAGS) -o aoc $(LLOBJ) 12p1.c && ./aoc < 12.in
 
+12p2: ll.o
+	gcc $(LLFLAGS) -o aoc $(LLOBJ) 12p2.c && ./aoc < 12.in
+
 .PHONY: clean
 
 clean:
