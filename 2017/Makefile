@@ -26,6 +26,9 @@ knot.o: knot.c knot.h
 12p2: ll.o
 	gcc $(LLFLAGS) -o aoc $(LLOBJ) 12p2.c && ./aoc < 12.in
 
+14p1: knot.o
+	gcc -o aoc 14p1.c knot.o && ./aoc
+
 .PHONY: clean
 
 clean:
