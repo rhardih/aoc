@@ -155,15 +155,6 @@ int main(int argc, char const *argv[])
     input[i - 1] = c;
   }
 
-  input_size = i + 5;
-
-  input = realloc(input, input_size * sizeof(int));
-  input[i] = 17;
-  input[i + 1] = 31;
-  input[i + 2] = 73;
-  input[i + 3] = 47;
-  input[i + 4] = 23;
-
   kh = knot_hash(input);
 
   printf("Knot Hash: %s\n", kh);

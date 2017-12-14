@@ -1,12 +1,22 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "knot.h"
 
-char *knot_hash(char *input)
+char *knot_hash(char *s)
 {
   int numbers[256], i, j, k, cpos = 0, ssize = 0;
-  int length;
+  char *input = strdup(s);
+  int ilen = strlen(input), length;
+
+  input = realloc(input, (ilen + 5 + 1) * sizeof(int));
+  input[ilen] = 17;
+  input[ilen + 1] = 31;
+  input[ilen + 2] = 73;
+  input[ilen + 3] = 47;
+  input[ilen + 4] = 23;
+  input[ilen + 5] = '\0';
 
   for (i = 0; i < 256; ++i)
     numbers[i] = i;
@@ -28,6 +38,8 @@ char *knot_hash(char *input)
       ssize++;
     }
   }
+
+  free(input);
 
   int denseh[16];
   for (i = 0; i < 16; ++i)
