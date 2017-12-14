@@ -71,24 +71,24 @@
  * list?
  *
  * --- Part Two ---
- * 
+ *
  * The logic you've constructed forms a single round of the Knot Hash algorithm;
  * running the full thing requires many of these rounds. Some input and output
  * processing is also required.
- * 
+ *
  * First, from now on, your input should be taken not as a list of numbers, but
  * as a string of bytes instead. Unless otherwise specified, convert characters
  * to bytes using their ASCII codes. This will allow you to handle arbitrary
  * ASCII strings, and it also ensures that your input lengths are never larger
  * than 255. For example, if you are given 1,2,3, you should convert it to the
  * ASCII codes for each character: 49,44,50,44,51.
- * 
+ *
  * Once you have determined the sequence of lengths to use, add the following
  * lengths to the end of the sequence: 17, 31, 73, 47, 23. For example, if you
  * are given 1,2,3, your final sequence of lengths should be
  * 49,44,50,44,51,17,31,73,47,23 (the ASCII codes from the input string combined
  * with the standard length suffix values).
- * 
+ *
  * Second, instead of merely running one round like you did above, run a total
  * of 64 rounds, using the same length sequence in each round. The current
  * position and skip size should be preserved between rounds. For example, if
@@ -96,7 +96,7 @@
  * with the same length sequence (3, 4, 1, 5, 17, 31, 73, 47, 23, now assuming
  * they came from ASCII codes and include the suffix), but start with the
  * previous round's current position (4) and skip size (4).
- * 
+ *
  * Once the rounds are complete, you will be left with the numbers from 0 to 255
  * in some order, called the sparse hash. Your next task is to reduce these to a
  * list of only 16 numbers called the dense hash. To do this, use numeric
@@ -105,16 +105,16 @@
  * element in the dense hash is the first sixteen elements of the sparse hash
  * XOR'd together, the second element in the dense hash is the second sixteen
  * elements of the sparse hash XOR'd together, etc.
- * 
+ *
  * For example, if the first sixteen elements of your sparse hash are as shown
  * below, and the XOR operator is ^, you would calculate the first output number
  * like this:
- * 
+ *
  * 65 ^ 27 ^ 9 ^ 1 ^ 4 ^ 3 ^ 40 ^ 50 ^ 91 ^ 7 ^ 6 ^ 0 ^ 2 ^ 5 ^ 68 ^ 22 = 64
  *
  * Perform this operation on each of the sixteen blocks of sixteen numbers in
  * your sparse hash to determine the sixteen numbers in your dense hash.
- * 
+ *
  * Finally, the standard way to represent a Knot Hash is as a single hexadecimal
  * string; the final output is the dense hash in hexadecimal notation. Because
  * each number in your dense hash will be between 0 and 255 (inclusive), always
@@ -124,9 +124,9 @@
  * characters of the hash would be 4007ff. Because every Knot Hash is sixteen
  * such numbers, the hexadecimal representation is always 32 hexadecimal digits
  * (0-f) long.
- * 
+ *
  * Here are some example hashes:
- * 
+ *
  * - The empty string becomes a2582a3a0e66e6e86e3812dcb672a272.
  * - AoC 2017 becomes 33efeb34ea91902bb2f59c9920caa6cd.
  * - 1,2,3 becomes 3efbe78a8d82f29979031a4aa0b16a9d.
@@ -140,16 +140,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define LIST_SIZE 256
+#include "knot.h"
 
 int main(int argc, char const *argv[])
 {
-  char c;
-  int numbers[LIST_SIZE], i, j, k, cpos = 0, ssize = 0;
-  int *input = NULL, input_size;
-
-  for (i = 0; i < LIST_SIZE; ++i)
-    numbers[i] = i;
+  char c, *kh;
+  int *input = NULL, input_size, i;
 
   i = 0;
 
@@ -168,50 +164,11 @@ int main(int argc, char const *argv[])
   input[i + 3] = 47;
   input[i + 4] = 23;
 
-  for (j = 0; j < 64; ++j)
-  {
-    for (k = 0; k < input_size; ++k)
-    {
-      int length = input[k];
-      int tmp[length];
+  kh = knot_hash(input, input_size);
 
-      for (i = 0; i < length; ++i)
-        tmp[i] = numbers[(cpos + i) % LIST_SIZE];
+  printf("Knot Hash: %s\n", kh);
 
-      for (i = 0; i < length; ++i)
-        numbers[(cpos + i) % LIST_SIZE] = tmp[(length - 1) - i];
-
-      cpos += length + ssize;
-      ssize++;
-    }
-  }
-
-  int denseh[16];
-  for (i = 0; i < 16; ++i)
-  {
-    denseh[i] = numbers[16 * i] ^
-      numbers[16 * i + 1] ^
-      numbers[16 * i + 2] ^
-      numbers[16 * i + 3] ^
-      numbers[16 * i + 4] ^
-      numbers[16 * i + 5] ^
-      numbers[16 * i + 6] ^
-      numbers[16 * i + 7] ^
-      numbers[16 * i + 8] ^
-      numbers[16 * i + 9] ^
-      numbers[16 * i + 10] ^
-      numbers[16 * i + 11] ^
-      numbers[16 * i + 12] ^
-      numbers[16 * i + 13] ^
-      numbers[16 * i + 14] ^
-      numbers[16 * i + 15];
-  }
-
-  printf("Knot Hash: %x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x\n",
-      denseh[0], denseh[1], denseh[2], denseh[3], denseh[4], denseh[5],
-      denseh[6], denseh[7], denseh[8], denseh[9], denseh[10], denseh[11],
-      denseh[12], denseh[13], denseh[14], denseh[15]);
-
+  free(kh);
   free(input);
 
   return 0;

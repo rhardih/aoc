@@ -4,6 +4,9 @@ ll.o:
 LLFLAGS := "-I../util"
 LLOBJ := "../util/ll.o"
 
+knot.o: knot.c knot.h
+	gcc -c knot.c
+
 # Make doesn't provide a real substring text function, hence this ugly sed hack
 %:
 	gcc -o aoc $@.c && ./aoc < ${shell echo "${@}" | sed -E -e "s/^([0-9]+)p[0-9]$$/\1/"}.in
@@ -13,6 +16,9 @@ LLOBJ := "../util/ll.o"
 
 3p2:
 	gcc -o aoc 3p2.c && ./aoc
+
+10p2: knot.o
+	gcc -o aoc 10p2.c knot.o && ./aoc < 10.in
 
 12p1: ll.o
 	gcc $(LLFLAGS) -o aoc $(LLOBJ) 12p1.c && ./aoc < 12.in
