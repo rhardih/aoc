@@ -144,8 +144,8 @@
 
 int main(int argc, char const *argv[])
 {
-  char c, *kh;
-  int *input = NULL, input_size, i;
+  char c, *kh, *input;
+  int input_size, i;
 
   i = 0;
 

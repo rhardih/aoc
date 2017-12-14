@@ -3,7 +3,7 @@
 
 #include "knot.h"
 
-char *knot_hash(int *input, int input_size)
+char *knot_hash(char *input, int input_size)
 {
   int numbers[256], i, j, k, cpos = 0, ssize = 0;
 
@@ -40,10 +40,11 @@ char *knot_hash(int *input, int input_size)
   }
 
   char *res = malloc(33 * sizeof(char));
-  sprintf(res, "%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x", denseh[0], denseh[1],
-      denseh[2], denseh[3], denseh[4], denseh[5], denseh[6], denseh[7],
-      denseh[8], denseh[9], denseh[10], denseh[11], denseh[12], denseh[13],
-      denseh[14], denseh[15]);
+  sprintf(res,
+      "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+      denseh[0], denseh[1], denseh[2], denseh[3], denseh[4], denseh[5],
+      denseh[6], denseh[7], denseh[8], denseh[9], denseh[10], denseh[11],
+      denseh[12], denseh[13], denseh[14], denseh[15]);
 
   return res;
 }
