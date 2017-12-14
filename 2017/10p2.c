@@ -164,7 +164,7 @@ int main(int argc, char const *argv[])
   input[i + 3] = 47;
   input[i + 4] = 23;
 
-  kh = knot_hash(input, input_size);
+  kh = knot_hash(input);
 
   printf("Knot Hash: %s\n", kh);
 

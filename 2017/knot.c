@@ -3,18 +3,19 @@
 
 #include "knot.h"
 
-char *knot_hash(char *input, int input_size)
+char *knot_hash(char *input)
 {
   int numbers[256], i, j, k, cpos = 0, ssize = 0;
+  int length;
 
   for (i = 0; i < 256; ++i)
     numbers[i] = i;
 
   for (j = 0; j < 64; ++j)
   {
-    for (k = 0; k < input_size; ++k)
+    k = 0;
+    while ((length = input[k++]) != '\0')
     {
-      int length = input[k];
       int tmp[length];
 
       for (i = 0; i < length; ++i)
