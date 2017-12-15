@@ -35,6 +35,9 @@ knot.o: knot.c knot.h
 15p1:
 	gcc -o aoc 15p1.c && ./aoc
 
+15p2:
+	gcc -o aoc 15p2.c && ./aoc
+
 .PHONY: clean
 
 clean:
