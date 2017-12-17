@@ -38,6 +38,9 @@ knot.o: knot.c knot.h
 15p2:
 	gcc -o aoc 15p2.c && ./aoc
 
+17p1: ll.o
+	gcc $(LLFLAGS) -o aoc 17p1.c $(LLOBJ) && ./aoc
+
 .PHONY: clean
 
 clean:
