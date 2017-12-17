@@ -41,6 +41,9 @@ knot.o: knot.c knot.h
 17p1: ll.o
 	gcc $(LLFLAGS) -o aoc 17p1.c $(LLOBJ) && ./aoc
 
+17p2: ll.o
+	gcc $(LLFLAGS) -o aoc 17p2.c $(LLOBJ) && ./aoc
+
 .PHONY: clean
 
 clean:
