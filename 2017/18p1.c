@@ -88,12 +88,7 @@ int main(int argc, char const *argv[])
   regcomp(&type0, "... . -?[0-9]+", REG_EXTENDED);
   regcomp(&type1, "... . [a-z]", REG_EXTENDED);
 
-  while ((linelen = getline(&program[i], &linecap, stdin)) > 0)
-  {
-    // Remove newline
-    program[i][linelen] = '\0';
-    i++;
-  }
+  while ((linelen = getline(&program[i++], &linecap, stdin)) > 0);
 
   i = 0;
 
