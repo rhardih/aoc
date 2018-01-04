@@ -1,5 +1,5 @@
-#ifndef LL_T
-#define LL_T
+#ifndef LINKEDLIST_T
+#define LINKEDLIST_T
 
 typedef struct ll_node ll_node_t;
 
