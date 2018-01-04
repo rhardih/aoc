@@ -47,6 +47,9 @@ knot.o: knot.c knot.h
 22p1:
 	gcc -o aoc 22p1.c && ./aoc
 
+22p2:
+	gcc -o aoc 22p2.c && ./aoc
+
 .PHONY: clean
 
 clean:
