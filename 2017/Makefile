@@ -50,6 +50,12 @@ knot.o: knot.c knot.h
 22p2:
 	gcc -o aoc 22p2.c && ./aoc
 
+21p1:
+	ruby 21.rb 5 < 21.in
+
+21p2:
+	ruby 21.rb 18 < 21.in
+
 .PHONY: clean
 
 clean:
