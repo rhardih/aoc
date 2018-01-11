@@ -48,7 +48,7 @@ knot.o: knot.c knot.h
 	gcc -o aoc 22p1.c && ./aoc
 
 22p2:
-	gcc -o aoc 22p2.c && ./aoc
+	ruby 22p2.rb < 22.in
 
 21p1:
 	ruby 21.rb 5 < 21.in
