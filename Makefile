@@ -7,7 +7,10 @@
 2017:
 	@cd 2017 && make $(filter-out $@,$(MAKECMDGOALS))
 
+2018:
+	@cd 2018 && make $(filter-out $@,$(MAKECMDGOALS))
+
 %:
 	@:
 
-.PHONY: 2015 2016 2017
+.PHONY: 2015 2016 2017 2018
