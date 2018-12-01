@@ -4,8 +4,11 @@ ll.o:
 LLFLAGS := "-I../util"
 LLOBJ := "../util/ll.o"
 
-bst.o: bst.c bst.h
-	gcc -c bst.c
+bst.o:
+	pushd ../util && make bst.o && popd
+
+BSTFLAGS := "-I../util"
+BSTOBJ := "../util/bst.o"
 
 # Make doesn't provide a real substring text function, hence this ugly sed hack
 %:
@@ -62,7 +65,7 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig pkg-config --
 	gcc -o aoc 19p2.c && ./aoc
 
 20p1: bst.o
-	gcc -o aoc 20p1.c bst.o && ./aoc < 20.in
+	gcc $(BSTFLAGS) -o aoc 20p1.c $(BSTOBJ) && ./aoc < 20.in
 
 20p2:
 	gcc -o aoc 20p2.c && sort -n 20.in | ./aoc
@@ -76,10 +79,7 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig pkg-config --
 24p2: ll.o
 	gcc $(LLFLAGS) -o aoc 24p2.c $(LLOBJ) && ./aoc < 24.in
 
-test: bst.o
-	gcc -o test test.c bst.o && ./test
-
-.PHONY: clean test
+.PHONY: clean
 
 clean:
-	rm -f aoc *.o test
+	rm -f aoc *.o
