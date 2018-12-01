@@ -5,11 +5,17 @@
 
 bst_node_t *bst_search(bst_node_t *x, void *k, int (*compare)(const void *, const void *))
 {
-  while (x != NULL && x->key != k)
-    if (compare(k, x->key))
+  while (x != NULL) {
+    int c = compare(k, x->key);
+
+    if (c == 0) {
+      break;
+    } else if (c < 0) {
       x = x->left;
-    else
+    } else {
       x = x->right;
+    }
+  }
 
   return x;
 }
@@ -135,11 +141,11 @@ void bst_iotw(bst_node_t *x, void (*printer)(void *))
 {
   if (x == NULL) return;
 
-  printf("( ");
+  printf("(");
   bst_iotw(x->left, printer);
   printer(x->key);
   bst_iotw(x->right, printer);
-  printf(" )");
+  printf(")");
 }
 
 void bst_free(bst_node_t *x)

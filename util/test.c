@@ -334,6 +334,11 @@ int bst_comp(const void *a, const void *b)
   return *(int *)a < *(int *)b;
 }
 
+int bst_search_comp(const void *a, const void *b)
+{
+  return *(int *)a - *(int *)b;
+}
+
 void bst_printer(void *p)
 {
   int a = *(int *)p;
@@ -379,8 +384,7 @@ void test_bst_insert() {
 void test_bst_search() {
   printf("\ntest_bst_search()\n");
 
-  bst_tree_t *t = malloc(sizeof(bst_tree_t));
-  t->root = NULL;
+  bst_tree_t *t = bst_tree_new(NULL);
 
   int values[] = { 42, 123, 11, 20 };
   bst_node_t n[] = {
@@ -397,7 +401,7 @@ void test_bst_search() {
   bst_iotw(t->root, bst_printer);
   printf("\n");
 
-  bst_node_t *result = bst_search(t->root, &values[3], bst_comp);
+  bst_node_t *result = bst_search(t->root, &values[3], bst_search_comp);
 
   printf("search:\n");
   bst_printer(n[3].key);

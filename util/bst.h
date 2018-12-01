@@ -43,8 +43,8 @@ typedef struct {
  *
  * Iterative search for node of with certain valued key.
  *
- * Search direction is dictated by the output of compare. Non-zero will search
- * left child, zero right.
+ * Search direction is dictated by the output of compare. Negative will search
+ * left child, positive right. For equality compare is expected to return zero.
  */
 bst_node_t *bst_search(bst_node_t *x, void *k, int (*compare)(const void *, const void *));
 
