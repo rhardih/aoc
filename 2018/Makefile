@@ -1,3 +1,9 @@
+ll.o:
+	pushd ../util && make ll.o && popd
+
+LLFLAGS := "-I../util"
+LLOBJ := "../util/ll.o"
+
 bst.o:
 	pushd ../util && make bst.o && popd
 
@@ -10,6 +16,10 @@ BSTOBJ := "../util/bst.o"
 
 1p2: bst.o
 	gcc $(BSTFLAGS) -o aoc 1p2.c $(BSTOBJ) && ./aoc < 1.in
+
+4p1: ll.o
+	gcc $(LLFLAGS) -o aoc 4p1.c $(LLOBJ) && sort 4.in | ./aoc
+
 
 .PHONY: clean
 
