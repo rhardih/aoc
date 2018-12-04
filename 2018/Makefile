@@ -20,6 +20,8 @@ BSTOBJ := "../util/bst.o"
 4p1: ll.o
 	gcc $(LLFLAGS) -o aoc 4p1.c $(LLOBJ) && sort 4.in | ./aoc
 
+4p2: ll.o
+	gcc $(LLFLAGS) -o aoc 4p2.c $(LLOBJ) && sort 4.in | ./aoc
 
 .PHONY: clean
 
