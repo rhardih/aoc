@@ -2,8 +2,8 @@
 %:
 	gcc -o aoc $@.c && ./aoc < ${shell echo "${@}" | sed -E -e "s/^([0-9]+)p[0-9]$$/\1/"}.in
 
-4p1:
-	gcc -o aoc 4p1.c && ./aoc
+4p%:
+	gcc -o aoc $@.c && ./aoc
 
 .PHONY: clean
 
