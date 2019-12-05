@@ -149,21 +149,10 @@ int main() {
 
         break;
       case 5: // jump-if-true
-        param0 = parameter_modes[0] ? opcodes[i + 1] : opcodes[opcodes[i + 1]];
-
-        if (param0) {
-          param1 = parameter_modes[1] ? opcodes[i + 2] : opcodes[opcodes[i + 2]];
-
-          i = param1;
-        } else {
-          i += 3;
-        }
-
-        break;
       case 6: // jump-if-false
         param0 = parameter_modes[0] ? opcodes[i + 1] : opcodes[opcodes[i + 1]];
 
-        if (!param0) {
+        if (opcode == 5 ? param0 : !param0) {
           param1 = parameter_modes[1] ? opcodes[i + 2] : opcodes[opcodes[i + 2]];
 
           i = param1;
