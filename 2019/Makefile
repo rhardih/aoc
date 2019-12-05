@@ -5,6 +5,9 @@
 4p%:
 	gcc -o aoc $@.c && ./aoc
 
+5p1:
+	gcc -o aoc 5p1.c && (cat 5.in; echo 1) | ./aoc
+
 .PHONY: clean
 
 clean:
