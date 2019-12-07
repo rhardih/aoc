@@ -8,8 +8,11 @@
 5p1:
 	gcc -o aoc 5p1.c && (cat 5.in; echo 1) | ./aoc
 
-5p2:
-	gcc -o aoc 5p2.c && (cat 5.in; echo 5) | ./aoc
+intcode.o: intcode.h intcode.c
+	gcc -c intcode.c
+
+5p2: intcode.o
+	gcc -o aoc intcode.o 5p2.c && ./aoc < 5.in
 
 .PHONY: clean
 

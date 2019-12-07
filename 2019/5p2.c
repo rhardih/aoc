@@ -72,13 +72,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+
+#include "intcode.h"
 
 int main() {
   int comma_count = 0;
-	char *tmp, *line = NULL;
+  char *tmp, *line = NULL;
   size_t linecap = 0;
 
-  // Input handling
+  /* Input handling */
 
   getline(&line, &linecap, stdin);
   tmp = line;
@@ -91,106 +94,62 @@ int main() {
   int opcode_count = comma_count + 1, index = 0;
   int *opcodes = malloc(sizeof(int) * opcode_count);
 
-	char *token, *string, *tofree;
-	tofree = string = strdup(line);
+  char *token, *string, *tofree;
+  tofree = string = strdup(line);
 
-	while ((token = strsep(&string, ",")) != NULL) {
+  while ((token = strsep(&string, ",")) != NULL) {
     sscanf(token, "%d", &opcodes[index]);
     index++;
   }
 
-  // Execution
+  free(line);
+  free(tofree);
 
-  int value, opcode, i = 0, param0, param1, output_index;
-  while ((value = opcodes[i]) != 99) {
-    opcode = value % 100;
-    int parameter_modes[] = {
-      value / 100 % 10,
-      value / 1000 % 10
-    };
+  /* Execution */
 
-    switch(opcode) {
-      case 1: // add
-        param0 = parameter_modes[0] ? opcodes[i + 1] : opcodes[opcodes[i + 1]];
-        param1 = parameter_modes[1] ? opcodes[i + 2] : opcodes[opcodes[i + 2]];
-        output_index = opcodes[i + 3];
+  int pipefd[2];
+  pid_t cpid;
 
-        opcodes[output_index] = param0 + param1;
-
-        i += 4;
-
-        break;
-      case 2: // multiply
-        param0 = parameter_modes[0] ? opcodes[i + 1] : opcodes[opcodes[i + 1]];
-        param1 = parameter_modes[1] ? opcodes[i + 2] : opcodes[opcodes[i + 2]];
-        output_index = opcodes[i + 3];
-
-        opcodes[output_index] = param0 * param1;
-
-        i += 4;
-
-        break;
-      case 3: // input
-        output_index = opcodes[i + 1];
-
-        if (scanf("%d", &opcodes[output_index]) == EOF) {
-          printf("No input provided for scanf, stopping.\n");
-          return 1;
-        }
-
-        i += 2;
-
-        break;
-      case 4: // ouput
-        output_index = opcodes[i + 1];
-
-        printf("output: %d\n", opcodes[output_index]);
-        i += 2;
-
-        break;
-      case 5: // jump-if-true
-      case 6: // jump-if-false
-        param0 = parameter_modes[0] ? opcodes[i + 1] : opcodes[opcodes[i + 1]];
-
-        if (opcode == 5 ? param0 : !param0) {
-          param1 = parameter_modes[1] ? opcodes[i + 2] : opcodes[opcodes[i + 2]];
-
-          i = param1;
-        } else {
-          i += 3;
-        }
-
-        break;
-      case 7: // less than
-        param0 = parameter_modes[0] ? opcodes[i + 1] : opcodes[opcodes[i + 1]];
-        param1 = parameter_modes[1] ? opcodes[i + 2] : opcodes[opcodes[i + 2]];
-        output_index = opcodes[i + 3];
-
-        opcodes[output_index] = param0 < param1 ? 1 : 0;
-
-        i += 4;
-
-        break;
-      case 8: // equals
-        param0 = parameter_modes[0] ? opcodes[i + 1] : opcodes[opcodes[i + 1]];
-        param1 = parameter_modes[1] ? opcodes[i + 2] : opcodes[opcodes[i + 2]];
-        output_index = opcodes[i + 3];
-
-        opcodes[output_index] = param0 == param1 ? 1 : 0;
-
-        i += 4;
-
-        break;
-      default:
-        printf("Unknown opcode value at location %d: %d\n", i, value);
-        return 1;
-    }
+  if (pipe(pipefd) == -1) {
+    perror("pipe");
+    exit(EXIT_FAILURE);
   }
 
-  free(line);
-	free(tofree);
+  cpid = fork();
+  if (cpid == -1) {
+    perror("fork");
+    exit(EXIT_FAILURE);
+  }
 
-  printf("The program finished.");
+  if (cpid == 0) {
+    /* Child process */
+
+    /* Close unused write end */
+    close(pipefd[1]);
+
+    /* Redirect stdin to pipe since the intcode computer uses scanf */
+    dup2(pipefd[0], STDIN_FILENO);
+
+    intcode_run(opcodes); // <--
+
+    close(pipefd[0]);
+    _exit(EXIT_SUCCESS);
+
+  } else {
+    /* Parent process */
+
+    /* Close unused read end */
+    close(pipefd[0]);
+
+    write(pipefd[1], "5", 1);
+
+    /* Reader will see EOF */
+    close(pipefd[1]);
+
+    /* Wait for child */
+    wait(NULL);
+    exit(EXIT_SUCCESS);
+  }
 
   return 0;
 }
