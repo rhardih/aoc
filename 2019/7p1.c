@@ -131,6 +131,23 @@ int main() {
   free(line);
   free(tofree);
 
+
+
+  // Disclaimer
+  //
+  // This is purposefully going completely overboard with regards to
+  // input/output handling and could b done in a much simpler way.
+  //
+  // The strategy taken here, is to split into two different processes, where
+  // the parent process is responsible for generating combinations of phase
+  // settings and then feeding them to a child process, which does the actual
+  // running of the intcode.
+  //
+  // In order to do that with just scanf/print functions, input redirection is
+  // needed and that is why the code below is somewhat noisy.
+
+
+
   // Disable buffering on stdout, so as not to have to flush after each printf.
   // This will be inherited in child process as well.
   setbuf(stdout, NULL);
