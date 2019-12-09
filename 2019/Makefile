@@ -14,6 +14,9 @@ intcode.o: intcode.h intcode.c
 5p2: intcode.o
 	gcc -o aoc intcode.o 5p2.c && ./aoc < 5.in
 
+7p1: intcode.o
+	gcc -o aoc intcode.o 7p1.c && ./aoc
+
 .PHONY: clean
 
 clean:
