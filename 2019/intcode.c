@@ -34,7 +34,7 @@ int intcode_run(int *opcodes) {
         output_index = opcodes[i + 1];
 
         if (scanf("%d", &opcodes[output_index]) == EOF) {
-          printf("No input provided for scanf, stopping.\n");
+          fprintf(stderr, "No input provided for scanf, stopping.\n");
           return 1;
         }
 
@@ -44,7 +44,7 @@ int intcode_run(int *opcodes) {
       case 4: // ouput
         output_index = opcodes[i + 1];
 
-        printf("output: %d\n", opcodes[output_index]);
+        printf("%d\n", opcodes[output_index]);
         i += 2;
 
         break;
@@ -82,12 +82,10 @@ int intcode_run(int *opcodes) {
 
         break;
       default:
-        printf("Unknown opcode value at location %d: %d\n", i, value);
+        fprintf(stderr, "Unknown opcode value at location %d: %d\n", i, value);
         return 1;
     }
   }
-
-  printf("The program finished.");
 
   return 0;
 }

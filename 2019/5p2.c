@@ -130,6 +130,7 @@ int main() {
     /* Redirect stdin to pipe since the intcode computer uses scanf */
     dup2(pipefd[0], STDIN_FILENO);
 
+    printf("Diagnostic code for system ID 5: ");
     intcode_run(opcodes); // <--
 
     close(pipefd[0]);
