@@ -305,7 +305,7 @@ void print(moon_t *moons[4]) {
 }
 
 int main() {
-  int i, total;
+  int i;
   moon_t io = {}, europa = {}, ganymede = {}, callisto = {};
 
   scanf("<x=%d, y=%d, z=%d>\n", &io.x, &io.y, &io.z);
@@ -325,17 +325,15 @@ int main() {
   moon_t *moons[4] = { &io, &europa, &ganymede, &callisto };
 
   int steps = 1000;
-  for (i = 0; i <= steps; i++) {
+  for (i = 0; i < steps; i++) {
     printf("\nAfter %d steps:\n", i);
     print(moons);
-    total = total_energy(moons);
-    printf("Total energy after step %d: %d\n", i, total);
 
     apply_gravity(pairs);
     apply_velocity(moons);
   }
 
-  printf("total energy in the system after %d steps: %d\n", steps, total);
+  printf("total energy in the system after %d steps: %d\n", i, total_energy(moons));
 
   return 0;
 }
