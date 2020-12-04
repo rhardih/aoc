@@ -8,9 +8,7 @@ valid_passports = 0
 input.each do |line|
   fields = line.tr("\n", " ").split(" ").map { |f| f.split(":") }.to_h
 
-  has_required_fields = fields.keys.to_set & required_fields == required_fields
-
-  next unless has_required_fields
+  next unless required_fields <= fields.keys.to_set
 
   byr_valid = fields["byr"].to_i.then { |year| 1920 <= year && year <= 2002 }
   iyr_valid = fields["iyr"].to_i.then { |year| 2010 <= year && year <= 2020 }
