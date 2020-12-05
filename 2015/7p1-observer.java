@@ -340,7 +340,7 @@ class NotInstruction implements Instruction {
 }
 
 class InstructionFactory {
-  public static Instruction getInstruction(Circuit circuit, String instruction) {
+  public static Instruction getInstruction(String instruction) {
     // Patterns
     Pattern andImmediatePattern = Pattern.compile("^(\\d+) AND ([a-z]+) -> ([a-z]+)$");
     Pattern andPattern = Pattern.compile("^([a-z]+) AND ([a-z]+) -> ([a-z]+)$");
@@ -427,7 +427,7 @@ class SomeAssemblyRequired {
         new ArrayList<SignalImmediateInstruction>();
 
     while (scanner.hasNext()) {
-      Instruction instruction = InstructionFactory.getInstruction(circuit, scanner.nextLine());
+      Instruction instruction = InstructionFactory.getInstruction(scanner.nextLine());
 
       instruction.performOn(circuit);
 
