@@ -1,0 +1,32 @@
+// dot -Tsvg 7.sample.dot > 7.sample.svg
+
+digraph D {
+rankdir="LR";
+
+123 -> x
+456 -> y
+
+x -> AND
+y -> AND
+AND -> d
+
+x -> OR
+y -> OR
+OR -> e
+
+x -> LSHIFT
+2 -> LSHIFT
+LSHIFT -> f
+
+y -> RSHIFT
+2 -> RSHIFT
+RSHIFT -> g
+
+NOT0 [label="NOT"]
+x -> NOT0
+NOT0 -> h
+
+NOT1 [label="NOT"]
+y -> NOT1
+NOT1 -> i
+}
