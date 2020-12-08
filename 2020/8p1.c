@@ -70,30 +70,30 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #define INS_COUNT 654
-#define MAX_INS_LEN 8
+#define INS_MAX_LEN 8
 
 int main(int argc, char **argv) {
   int accumulator = 0, i = 0, pc = 0;
-  int run[INS_COUNT] = { 0 }, value;
-  char instructions[INS_COUNT][MAX_INS_LEN + 1];
-  char current_instruction[MAX_INS_LEN + 1], sign;
+  int marks[INS_COUNT] = { 0 }, value;
+  char instructions[INS_COUNT][INS_MAX_LEN + 1];
 
   while(gets(instructions[i++]) != NULL) {};
 
-  while(run[pc] == 0) {
-    run[pc] = 1;
+  while(marks[pc] == 0) {
+    marks[pc] = 1;
 
-    sscanf(instructions[pc], "%3s %c%d", current_instruction, &sign, &value);
+    value = atoi(instructions[pc] + 4);
 
-    switch(current_instruction[0]) {
+    switch(instructions[pc][0]) {
       case 'a': // acc
-        sign == '+' ? (accumulator += value) : (accumulator -= value);
+        accumulator += value;
         pc++;
         break;
       case 'j': // jmp
-        sign == '+' ? (pc += value) : (pc -= value);
+        pc += value;
         break;
       case 'n': // nop
         pc++;
