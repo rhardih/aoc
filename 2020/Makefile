@@ -8,6 +8,9 @@
 6p%: 6.in
 	ruby ${@}.rb < 6.in
 
+15p%:
+	ruby ${@}.rb
+
 .PHONY: clean
 
 clean:
