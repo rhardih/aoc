@@ -143,7 +143,11 @@ class CircularList
     digits = input.split("").map(&:to_i)
     cups = digits.map { |digit| Cup.new(digit) }
 
+    @index = Hash.new
+
     cups.each_with_index do |cup,i|
+      @index[cup.value] = cup
+
       next if i == 0
       last_cup = cups[i - 1]
       last_cup.next = cup
@@ -158,20 +162,26 @@ class CircularList
 	end
 
   def pick_up
+    @index.delete(@current.next.value)
+    @index.delete(@current.next.next.value)
+    @index.delete(@current.next.next.next.value)
+
     tmp = @current.next
     @current.next = @current.next.next.next.next
     tmp
   end
 
+  def place(cup, destination_cup)
+    @index[cup.value] = cup
+    @index[cup.next.value] = cup.next
+    @index[cup.next.next.value] = cup.next.next
+
+    cup.next.next.next = destination_cup.next
+    destination_cup.next = cup
+  end
+
 	def find(value)
-		node = @current
-
-    9.times do
-      return node if node.value == value
-      node = node.next
-		end
-
-    nil
+    @index[value]
 	end
 
   def next_current
@@ -217,9 +227,7 @@ MOVES.times do |i|
     destination = circle.max if destination < circle.min
   end
 
-  # place cups
-  picked_up.next.next.next = destination_cup.next
-  destination_cup.next = picked_up
+  circle.place(picked_up, destination_cup)
 
 	debug "pick up: #{picked_up.to_s(3)}"
   debug "destination: #{destination_cup.value}"
