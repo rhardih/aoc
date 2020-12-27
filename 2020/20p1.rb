@@ -234,33 +234,8 @@ class Tile
     id != other.id && data.row(-1) == other.data.row(0)
   end
 
-  def fits_right_of?(other)
-    id != other.id && data.column(0) == other.data.column(-1)
-  end
-
-  def fits_below?(other)
-    id != other.id && data.row(0) == other.data.row(-1)
-  end
-
   def fits_left_of?(other)
     id != other.id && data.column(-1) == other.data.column(0)
-  end
-
-  def ==(other)
-    data == other.data
-  end
-
-  def eql?(other)
-    data == other.data
-  end
-
-  def hash
-    data.hash
-  end
-
-  def to_s
-    rows = data.row_vectors.map { |rv| rv.to_a.join }
-    "Tile id=#{id}\n#{rows.join("\n")}"
   end
 end
 
@@ -275,40 +250,17 @@ end
 
 all_variants = tiles.map(&:variants).flatten
 
-top_border = all_variants.find_all do |t0|
+# It's only necessary to find all candidates for a single corner, since by
+# rotating and/or flipping the entire image, it would fit in all four corners
+# anyway.
+
+# Find candidate tiles for top left corner
+top_left = all_variants.find_all do |t0|
   !all_variants.any? do |t1|
-    t1.fits_above?(t0)
+    t1.fits_above?(t0) || t1.fits_left_of?(t0)
   end
 end
 
-right_border = all_variants.find_all do |t0|
-  !all_variants.any? do |t1|
-    t1.fits_right_of?(t0)
-  end
-end
-
-bottom_border = all_variants.find_all do |t0|
-  !all_variants.any? do |t1|
-    t1.fits_below?(t0)
-  end
-end
-
-left_border = all_variants.find_all do |t0|
-  !all_variants.any? do |t1|
-    t1.fits_left_of?(t0)
-  end
-end
-
-top_left = left_border & top_border
-top_right = top_border & right_border
-bottom_right = right_border & bottom_border
-bottom_left = bottom_border & left_border
-
-result = [
-  top_left,
-  top_right,
-  bottom_right,
-  bottom_left
-].flatten.map(&:id).uniq.reduce(:*)
+result = top_left.map(&:id).uniq.reduce(:*)
 
 puts "Multiple of the IDs of the four corner tiles: #{result}"
