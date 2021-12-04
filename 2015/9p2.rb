@@ -1,36 +1,41 @@
+=begin
+
+--- Part Two ---
+
+The next year, just to show off, Santa decides to take the route with the
+longest distance instead.
+
+He can still start and end at any two (different) locations he wants, and he
+still must visit each location exactly once.
+
+For example, given the distances above, the longest route would be 982 via (for
+example) Dublin -> London -> Belfast.
+
+What is the distance of the longest route?
+
+=end
+
 require "set"
 
-routes = Hash.new { |h, k| h[k] = {} }
 cities = Set.new
+distances = {}
 
-longest_route = nil
-longest_route_length = 0
-
-STDIN.read.split("\n").each_with_index do |l, i|
-  from, to, distance = l.match(/(^\w+) to (\w+) = (\d+)/).captures
+STDIN.readlines.map(&:split).each do |from, _, to, _, distance|
+  distances[[from, to].sort] = distance.to_i
 
   cities << from << to
-
-  routes[from][to] = distance.to_i
-  routes[to][from] = distance.to_i
 end
-
-cities = cities.to_a
 
 # Pick each possible route, where all cities are visited once
-cities.permutation(cities.length).each do |route|
-  route_length = 0
-
+route_distances = cities.to_a.permutation.map do |route|
   # Add up each step on the route
-  route.each_cons(2) do |step|
-    from, to = step
-    route_length += routes[from][to]
+  distance = route.each_cons(2).reduce(0) do |acc, step|
+    acc + distances[step.sort]
   end
 
-  if route_length > longest_route_length
-    longest_route = route
-    longest_route_length = route_length
-  end
+  [route, distance]
 end
 
-puts "Shortest route is #{longest_route.join(" -> ")} = #{longest_route_length}"
+longest_route = route_distances.sort_by! { |_, distance| distance }.last
+
+puts "Longest route is #{longest_route[0].join(" -> ")} = #{longest_route[1]}"

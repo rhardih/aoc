@@ -9,7 +9,6 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig pkg-config --
 4p2:
 	gcc $(OSSLFLAGS) -o aoc 4p2.c && ./aoc
 
-
 # brew install openjdk
 # sudo ln -sfn /usr/local/opt/openjdk/libexec/openjdk.jdk
 # /Library/Java/JavaVirtualMachines/openjdk.jdk
@@ -27,6 +26,15 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig pkg-config --
 
 7p2: 7.in
 	go run 7p2.go < 7.in
+
+8p1: 8.in
+	ruby 8p1.rb < 8.in
+
+9p1: 9.in
+	ruby 9p1.rb < 9.in
+
+9p2: 9.in
+	ruby 9p2.rb < 9.in
 
 .PHONY: clean
 
