@@ -48,6 +48,12 @@ OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig pkg-config --
 11p2:
 	ruby 11p2.rb
 
+12p1:
+	ruby 12p1.rb < 12.in
+
+12p2:
+	ruby 12p2.rb < 12.in
+
 .PHONY: clean
 
 clean:
