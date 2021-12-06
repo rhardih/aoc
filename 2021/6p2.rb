@@ -17,12 +17,8 @@ fish = STDIN.read.split(",").map(&:to_i).reduce(Hash.new(0)) do |h, fish|
   h
 end
 
-day = 0
-
-loop do
-  tmp = fish[6]
-
-  -1.upto(7) do |i|
+256.times do
+  (-1..7).each do |i|
     next unless fish.key?(i + 1)
 
     fish[i] = fish[i + 1]
@@ -35,10 +31,6 @@ loop do
   end
 
   fish.delete(-1)
-
-  day += 1
-
-  break if day == 256
 end
 
 puts "Number of lanternfish afer 256 days: #{fish.values.sum}"

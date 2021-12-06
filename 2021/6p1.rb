@@ -79,10 +79,8 @@ Find a way to simulate lanternfish. How many lanternfish would there be after
 
 fish = STDIN.read.split(",").map(&:to_i)
 
-day = 0
-
-loop do
-  0.upto(fish.length - 1) do |i|
+80.times do
+  (0...fish.length).each do |i|
     fish[i] -= 1
 
     if fish[i] == -1
@@ -91,11 +89,7 @@ loop do
     end
   end
 
-  day += 1
-
   # puts "After #{day} days: #{fish.join(",")}"
-
-  break if day == 80
 end
 
 puts "Number of lanternfish afer 80 days: #{fish.length}"
