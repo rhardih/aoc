@@ -52,58 +52,54 @@ What do you get if you multiply together the sizes of the three largest basins?
 
 =end
 
-map = STDIN.read.split("\n").map { |line| line.split("").map(&:to_i) }
-risk_levels = map.map { |row| row.map { |value| 1 + value } }
+require_relative "9"
 
-@rows = map.size
-@cols = map[0].size
-@basin = 1
+heightmap = HeightMap.new(
+  STDIN.read.split("\n").map { |line| line.split("").map(&:to_i) }
+)
+risk_levels = heightmap.map { |row| row.map { |value| 1 + value } }
 
-def flow(map, row, col)
-  return false if row < 0 || row >= @rows || col < 0 || col >= @cols
-  return false if map[row][col] > 0 || map[row][col] == -1 # already marked
+# Fill location and neighboards recursively with value, if not already set
+def floodfill(heightmap, basin, row, col)
+  # Check if out of bounds or already filled
+  if row < 0 || row >= heightmap.height ||
+      col < 0 || col >= heightmap.width ||
+      heightmap[row][col] > 0 || heightmap[row][col] == -1
+    return basin
+  end
 
-  # Up, left, right, down
-  coords = [[0, -1], [-1, 0], [1, 0], [0, 1]]
+  heightmap[row][col] = basin
 
-  map[row][col] = @basin
-
-  coords.each do |x_offset, y_offset|
+  [[0, -1], [-1, 0], [1, 0], [0, 1]].each do |x_offset, y_offset|
     x = row + x_offset
     y = col + y_offset
 
-    flow(map, x, y)
+    floodfill(heightmap, basin, x, y)
   end
 
-  true
+  basin + 1
 end
 
-def is_lowest?(map, row, col)
-  adj(map, row, col).all? { |adj_value| map[row][col] < adj_value }
-end
-
-(0...@rows).each do |x|
-  (0...@cols).each do |y|
-    if map[x][y] == 9
-      map[x][y] = -1
-    else
-      map[x][y] = 0
-    end
+# Pre-fill all locations with -1 if it's not a boundary (9)
+heightmap.locations.each do |x, y|
+  if heightmap[x][y] == 9
+    heightmap[x][y] = -1
+  else
+    heightmap[x][y] = 0
   end
 end
 
-(0...@rows).each do |x|
-  (0...@cols).each do |y|
-    @basin += 1 if flow(map, x, y)
-  end
+# Try to do a floodfill from each location and keep track of basin number
+basin = heightmap.locations.reduce(1) do |basin, location|
+  x, y = location
+  floodfill(heightmap, basin, x, y)
 end
 
-basin_sizes = []
-
-(1...@basin).each do |basin_no|
-  basin_sizes << map.map { |row| row.count(basin_no) }.sum
+# Count the number of locations that have the values of each basin number
+basin_sizes = (1...basin).reduce([]) do |memo, basin_no|
+  memo.push(heightmap.map { |row| row.count(basin_no) }.sum)
 end
 
-result = basin_sizes.sort[-3..-1].reduce(&:*)
+result = basin_sizes.sort.last(3).reduce(&:*)
 
 puts "Product of the sizes of the three largest basins: #{result}"

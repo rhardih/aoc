@@ -42,21 +42,7 @@ levels of all low points on your heightmap?
 
 =end
 
-class HeightMap < Array
-  attr_reader :width
-  attr_reader :height
-
-  def initialize(*args)
-    super
-
-    @width = self[0].size
-    @height = self.size
-  end
-
-  def locations
-    (0...width).to_a.product((0...height).to_a)
-  end
-end
+require_relative "9"
 
 heightmap = HeightMap.new(
   STDIN.read.split("\n").map { |line| line.split("").map(&:to_i) }
