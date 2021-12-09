@@ -42,52 +42,53 @@ levels of all low points on your heightmap?
 
 =end
 
-map = STDIN.read.split("\n").map { |line| line.split("").map(&:to_i) }
-risk_levels = map.map { |row| row.map { |value| 1 + value } }
+class HeightMap < Array
+  attr_reader :width
+  attr_reader :height
 
-@rows = map.size
-@cols = map[0].size
+  def initialize(*args)
+    super
 
-def adj(map, row, col)
-  coords = [
-    # Prev row
-    # [-1, -1],
-    [0, -1],
-    # [1, -1],
+    @width = self[0].size
+    @height = self.size
+  end
 
-    # Same row
-    [-1, 0],
-    [1, 0],
+  def locations
+    (0...width).to_a.product((0...height).to_a)
+  end
+end
 
-    # Next row
-    # [-1, 1],
-    [0, 1],
-    # [1, 1],
-  ]
+heightmap = HeightMap.new(
+  STDIN.read.split("\n").map { |line| line.split("").map(&:to_i) }
+)
+risk_levels = heightmap.map { |row| row.map { |value| 1 + value } }
 
-  coords.map do |x_offset, y_offset|
+# Gives a list of neighbouring values for a given location
+def adj(heightmap, row, col)
+  [[0, -1], [-1, 0], [1, 0], [0, 1]].reduce([]) do |acc, offset|
+    x_offset, y_offset = offset
     x = row + x_offset
     y = col + y_offset
 
-    if x < 0 || x >= @rows ||
-        y < 0 || y >= @cols
-      nil
+    if x < 0 || x >= heightmap.width ||
+        y < 0 || y >= heightmap.height
+      acc
     else
-      map[x][y]
+      acc.push(heightmap[x][y])
     end
-  end.select { |el| !el.nil? }
-end
-
-def is_lowest?(map, row, col)
-  adj(map, row, col).all? { |adj_value| map[row][col] < adj_value }
-end
-
-sum = 0
-
-(0...@rows).each do |x|
-  (0...@cols).each do |y|
-    sum += risk_levels[x][y] if is_lowest?(map, x, y)
   end
+end
+
+# Whether a given locations value is the lowest among neighbours
+def is_lowest?(heightmap, row, col)
+  adj(heightmap, row, col).all? do |adj_value|
+    heightmap[row][col] < adj_value
+  end
+end
+
+sum = heightmap.locations.reduce(0) do |acc, location|
+  x, y = location
+  acc + (is_lowest?(heightmap, x, y) ? risk_levels[x][y] : 0)
 end
 
 puts "Sum of the risk of all low points: #{sum}"
