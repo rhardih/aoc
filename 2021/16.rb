@@ -99,4 +99,38 @@ class Packet
   def version_numbers_sum
     version + sub_packets.map(&:version_numbers_sum).sum
   end
+
+  def value
+    return sub_packets.first.value if sub_packets.one?
+
+    case type_id
+    when 0 # sum
+      sub_packets.map(&:value).sum
+    when 1 # product
+      sub_packets.reduce(1) { |acc, packet| acc * packet.value }
+    when 2 # min
+      sub_packets.min_by { |packet| packet.value }.value
+    when 3 # max
+      sub_packets.max_by { |packet| packet.value }.value
+    when 4 # literal value
+      index = 6
+      value_string = ""
+
+      loop do
+        prefix, *group = bin[index,5].chars
+        value_string << group.join
+        index += 5
+
+        break if prefix == "0"
+      end
+
+      value_string.to_i(2)
+    when 5 # greater than
+      sub_packets.first.value > sub_packets.last.value ? 1 : 0
+    when 6 # less than
+      sub_packets.first.value < sub_packets.last.value ? 1 : 0
+    when 7 # equal
+      sub_packets.first.value == sub_packets.last.value ? 1 : 0
+    end
+  end
 end
