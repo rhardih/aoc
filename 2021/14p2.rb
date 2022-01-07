@@ -30,7 +30,7 @@ rules = tmp.split("\n").reduce({}) do |memo, rule|
 end
 
 pairs = template.chars.each_cons(2).reduce(Hash.new(0)) do |memo, pair|
-  memo[pair.join] = 1
+  memo[pair.join] += 1
   memo
 end
 
