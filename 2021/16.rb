@@ -22,11 +22,11 @@ class Packet
     # Initialize sub_packets as well
     if operator?
       if length_type_id == "0"
-        index = 6 + 1 + 15
+        offset = 6 + 1 + 15
+        index =  offset
 
-        # Can't make a packet of zeroes
-        until bin[index..-1].chars.all?("0")
-          next_packet = Packet.new(bin[index..-1])
+        until index == offset + length_sub_packets
+          next_packet = Packet.new(bin[index..])
 
           @sub_packets << next_packet
 
@@ -36,9 +36,7 @@ class Packet
         index = 6 + 1 + 11
 
         no_sub_packets.times do
-          break if bin[index..-1].chars.all?("0")
-
-          next_packet = Packet.new(bin[index..-1])
+          next_packet = Packet.new(bin[index..])
 
           @sub_packets << next_packet
 
@@ -69,26 +67,28 @@ class Packet
   end
 
   def header_size
-    unless operator?
-      6
-    else
+    if operator?
       6 + 1 + (length_type_id == "0" ? 15 : 11)
+    else
+      6
     end
   end
 
   def get_size
-    unless operator?
-      index = 6
+    if operator?
+      header_size + sub_packets.map(&:size).sum
+    else
+      index = header_size
 
       loop do
         prefix = bin[index]
+
         index += 5
+
         break if prefix == "0"
       end
 
       index
-    else
-      header_size + sub_packets.map(&:size).sum
     end
   end
 
@@ -101,8 +101,6 @@ class Packet
   end
 
   def value
-    return sub_packets.first.value if sub_packets.one?
-
     case type_id
     when 0 # sum
       sub_packets.map(&:value).sum
@@ -117,7 +115,7 @@ class Packet
       value_string = ""
 
       loop do
-        prefix, *group = bin[index,5].chars
+        prefix, *group = bin[index, 5].chars
         value_string << group.join
         index += 5
 

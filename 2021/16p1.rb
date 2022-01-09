@@ -161,11 +161,11 @@ require_relative "16"
   "620080001611562C8802118E34" => 12,
   "C0015000016115A2E0802F182340" => 23,
   "A0016C880162017C3686B18A3D4780" => 31,
-}.each do |hex, sum|
+}.each do |hex, expected_value|
   packet = Packet.from_hex(hex)
 
-  if packet.version_numbers_sum != sum
-    raise "version_numbers_sum for '#{hex}' != #{sum}"
+  if packet.version_numbers_sum != expected_value
+    raise "version_numbers_sum for #{hex}: expected: #{expected_value}, got: #{packet.version_numbers_sum}"
   end
 end
 

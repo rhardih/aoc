@@ -48,6 +48,21 @@ hexadecimal-encoded BITS transmission?
 
 require_relative "16"
 
+# Packet#size tests
+
+{
+  "D2FE28" => 21,
+  "38006F45291200" => 49,
+}.each do |hex, expected_value|
+  packet = Packet.from_hex(hex)
+
+  if packet.size != expected_value
+    raise "#{hex}: expected: #{expected_value}, got: #{packet.size}"
+  end
+end
+
+# Packet#value tests
+
 {
 "C200B40A82" => 3,
 "04005AC33890" => 54,
