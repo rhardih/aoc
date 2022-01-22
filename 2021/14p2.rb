@@ -18,11 +18,6 @@ the most common element and subtract the quantity of the least common element?
 
 template, tmp = STDIN.read.split("\n\n")
 
-element_counts = template.chars.reduce(Hash.new(0)) do |memo, char|
-  memo[char] += 1
-  memo
-end
-
 rules = tmp.split("\n").reduce({}) do |memo, rule|
   from, to = rule.split(" -> ")
   memo[from] = to
