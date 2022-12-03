@@ -1,5 +1,6 @@
 %:
-	ruby $@.rb < ${shell echo "${@}" | sed -E -e "s/^([0-9]+)p[0-9]$$/\1/"}.in
+	day=${shell echo "${@}" | sed -E -e "s/^([0-9]+)p[0-9]$$/\1/"}; \
+	ruby $@.rb < $$day.in
 
 %s:
 	ruby ${shell echo "${@}" | sed -E -e "s/s//"}.rb < sample.in
