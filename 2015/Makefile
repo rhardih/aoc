@@ -3,6 +3,10 @@
 
 OSSLFLAGS := `PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig pkg-config --cflags --libs openssl`
 
+%awk:
+	day=${shell echo "${@}" | sed -E -e "s/^([0-9]+)awk/\1/"}; \
+	gawk -f $$day.awk < $$day.in
+
 4p1:
 	gcc $(OSSLFLAGS) -o aoc 4p1.c && ./aoc
 
