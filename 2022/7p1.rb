@@ -113,8 +113,8 @@ file_system = {}
 current_dir = nil
 
 def total_size(directory)
-  directory.reduce(0) do |acc, entry|
-    k, v = entry
+  directory.reduce(0) do |acc, el|
+    k, v = el
 
     if k == :parent
       acc
@@ -124,6 +124,25 @@ def total_size(directory)
       else # dir
         acc + total_size(v)
       end
+    end
+  end
+end
+
+def sum(limit, directory)
+  result = 0
+
+  ts = total_size(directory)
+
+  result += ts if ts < limit
+
+  result + directory.reduce(0) do |acc, el|
+    k, v = el
+
+    # Skip non-dirs
+    if k == :parent || v.is_a?(Integer)
+      acc
+    else
+      acc + sum(limit, v)
     end
   end
 end
@@ -150,26 +169,5 @@ STDIN.read.split("\n").each do |line|
   end
 end
 
-queue = Queue.new
-queue.push(file_system["/"])
 
-sum = 0
-
-until queue.empty?
-  current_dir = queue.pop
-
-  ts = total_size(current_dir)
-
-  if ts < 100_000
-    sum += ts
-  end
-
-  current_dir.each do |k, v|
-    next if k == :parent
-    next if v.is_a?(Integer)
-
-    queue.push(v)
-  end
-end
-
-puts "Sum of the total sizes: #{sum}"
+puts "Sum of the total sizes: #{sum(100_000, file_system["/"])}"
