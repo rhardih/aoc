@@ -41,18 +41,25 @@ end
 
 space[0][0][0] = 2
 
-for x in 0...space_magnitude do
-  for y in 0...space_magnitude do
-    for z in 0...space_magnitude do
-      next if space[x][y][z] == 1
+# This is just lazy ... this flood fill should really be recursive or queue
+# based, so the steam "flows" into air pockets
+# 
+# I just guessed at the number of passes here and the results are stable around
+# this number of passes
+5.times do
+  for x in 0...space_magnitude do
+    for y in 0...space_magnitude do
+      for z in 0...space_magnitude do
+        next if space[x][y][z] == 1
 
-      if space[x - 1][y][z] == 2 ||
-          space[x + 1][y][z] == 2 ||
-          space[x][y - 1][z] == 2 ||
-          space[x][y + 1][z] == 2 ||
-          space[x][y][z - 1] == 2 ||
-          space[x][y][z + 1] == 2
-        space[x][y][z] = 2
+        if space[x - 1][y][z] == 2 ||
+            space[x + 1][y][z] == 2 ||
+            space[x][y - 1][z] == 2 ||
+            space[x][y + 1][z] == 2 ||
+            space[x][y][z - 1] == 2 ||
+            space[x][y][z + 1] == 2
+          space[x][y][z] = 2
+        end
       end
     end
   end
@@ -91,8 +98,5 @@ for x in 0...space_magnitude do
     end
   end
 end
-
-# Guessed
-# 2175 - Too low
 
 puts "Exterior surface area of scanned lava droplet: #{surface_area}"
