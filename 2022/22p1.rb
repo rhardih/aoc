@@ -118,6 +118,38 @@ def map_to_s(m)
   tmp.to_a.map(&:join).join("\n")
 end
 
+def wrap_up(map, col)
+  (map.row_count - 1).downto(0) do |row|
+    return row if map[row, col] != nil
+  end
+
+  throw "wrap_up"
+end
+
+def wrap_down(map, col)
+  0.upto(map.row_count - 1) do |row|
+    return row if map[row, col] != nil
+  end
+
+  throw "wrap_down"
+end
+
+def wrap_left(map, row)
+  (map.column_count - 1).downto(0) do |col|
+    return col if map[row, col] != nil
+  end
+
+  throw "wrap_left"
+end
+
+def wrap_right(map, row)
+  0.upto(map.column_count - 1) do |col|
+    return col if map[row, col] != nil
+  end
+
+  throw "wrap_right"
+end
+
 # Facing is 0 for right (>), 1 for down (v), 2 for left (<), and 3 for up (^)
 RIGHT = 0
 DOWN = 1
@@ -172,15 +204,7 @@ until description.empty?
           # the next instruction.
           break
         when nil
-          wrapped_y = 0
-
-          # Find the index of the first non-whitespace character
-          (map.row_count - 1).downto(0) do |row|
-            if map[row, current_x] != nil
-              wrapped_y = row
-              break
-            end
-          end
+          wrapped_y = wrap_up(map, current_x)
 
           if map[wrapped_y, current_x] == "#"
             break
@@ -202,14 +226,7 @@ until description.empty?
           # If a movement instruction would take you off of the map, you wrap
           # around to the other side of the board.
 
-          wrapped_y = 0
-
-          0.upto(map.row_count - 1) do |row|
-            if map[row, current_x] != nil
-              wrapped_y = row
-              break
-            end
-          end
+          wrapped_y = wrap_down(map, current_x)
 
           if map[wrapped_y, current_x] == "#"
             break
@@ -226,14 +243,7 @@ until description.empty?
         when "#"
           break
         when nil
-          wrapped_x = 0
-
-          (map.column_count - 1).downto(0) do |col|
-            if map[current_y, col] != nil
-              wrapped_y = col
-              break
-            end
-          end
+          wrapped_x = wrap_left(map, current_y)
 
           if map[current_y, wrapped_x] == "#"
             break
@@ -250,14 +260,7 @@ until description.empty?
         when "#"
           break
         when nil
-          wrapped_x = 0
-
-          0.upto(map.column_count - 1) do |col|
-            if map[current_y, col] != nil
-              wrapped_y = col
-              break
-            end
-          end
+          wrapped_x = wrap_right(map, current_y)
 
           if map[current_y, wrapped_x] == "#"
             break
@@ -276,8 +279,3 @@ end
 
 puts "Stop at #{current_x + 1}, #{current_y + 1} facing #{facing}"
 puts "Password: #{1000 * (current_y + 1) + 4 * (current_x + 1) + facing}"
-
-# puts map_to_s(map)
-
-# Guess
-# 190056 - Too high
