@@ -3,7 +3,8 @@
 	ruby $@.rb < $$day.in
 
 %s:
-	ruby ${shell echo "${@}" | sed -E -e "s/s//"}.rb < sample.in
+	day=${shell echo "${@}" | sed -E -e "s/^([0-9]+)p[0-9]s$$/\1/"}; \
+	ruby ${shell echo "${@}" | sed -E -e "s/s//"}.rb < $$day.example.in
 
 %awk:
 	day=${shell echo "${@}" | sed -E -e "s/^([0-9]+)awk/\1/"}; \
