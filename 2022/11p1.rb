@@ -248,36 +248,12 @@ stuff-slinging simian shenanigans?
 
 =end
 
-class Item
-  attr_accessor :value
-
-  def initialize(value)
-    @value = value
-  end
-
-  def to_s
-    value.to_s
-  end
-end
-
-class Operation
-  attr_accessor :operator
-  attr_accessor :value
-
-  def initialize(operator, value)
-    @operator = operator
-    @value = value
-  end
-end
+Operation = Struct.new(:operator, :value)
 
 class Monkey
-  attr_accessor :id
-  attr_accessor :items
-  attr_accessor :operation
-  attr_accessor :divisible
-  attr_accessor :test_true
+  attr_accessor :id, :items, :operation, :divisible, :inspections
+  attr_accessor :test_true, :test_false
   attr_accessor :test_false
-  attr_accessor :inspections
 
   def self.from_string(s)
     m = Monkey.new
@@ -289,7 +265,7 @@ class Monkey
       when /^Monkey (\d+):$/
         m.id = $1.to_i
       when /^  Starting items: (.+)$/
-        m.items = $1.split(", ").map { |value| Item.new(value.to_i) }
+        m.items = $1.split(", ").map { |value| value.to_i }
       when /^  Operation: new = old ([+*]) (.+)$/
         m.operation = Operation.new($1, $2)
       when /^  Test: divisible by (\d+)$/
@@ -305,73 +281,78 @@ class Monkey
   end
 end
 
-TRACE = false
-
-def trace(s)
-  puts s if TRACE
+def debug(s = "")
+  puts s if ENV["DEBUG"]
 end
 
 monkeys = []
 
 STDIN.read.split("\n\n").each { |m| monkeys << Monkey.from_string(m) }
 
-for round in 1..20 do
+rounds = 20
+
+for round in 1..rounds do
   monkeys.each do |m|
-    trace "Monkey #{m.id}"
+    debug "Monkey #{m.id}:"
 
     until m.items.empty?
       item = m.items.shift
 
-      trace "  Monkey inspects an item with a worry level of #{item}."
+      debug "  Monkey inspects an item with a worry level of #{item}."
 
       m.inspections += 1
 
-      current_wl = item.value
+      current_wl = item
 
       if m.operation.operator == "*"
         if m.operation.value == "old"
-          item.value *= item.value
+          item *= item
 
-          trace "    Worry level is multiplied by #{current_wl} to #{item.value}."
+          debug "    Worry level is multiplied by #{current_wl} to #{item}."
         else
-          item.value *= m.operation.value.to_i
+          item *= m.operation.value.to_i
 
-          trace "    Worry level is multiplied by #{m.operation.value.to_i} to #{item.value}."
+          debug "    Worry level is multiplied by #{m.operation.value.to_i} to #{item}."
         end
       else # +
         if m.operation.value == "old"
-          item.value += item.value
+          item += item
 
-          trace "    Worry level increases by #{current_wl} to #{item.value}."
+          debug "    Worry level increases by #{current_wl} to #{item}."
         else
-          item.value += m.operation.value.to_i
+          item += m.operation.value.to_i
 
-          trace "    Worry level increases by #{m.operation.value.to_i} to #{item.value}."
+          debug "    Worry level increases by #{m.operation.value.to_i} to #{item}."
         end
       end
 
-      item.value /= 3
+      item /= 3
 
-      trace "    Monkey gets bored with item. Worry level is divided by 3 to #{item.value}."
+      debug "    Monkey gets bored with item. Worry level is divided by 3 to #{item}."
 
-      if item.value % m.divisible == 0
-        trace "    Current worry level is divisible by #{m.divisible}."
-        trace "    Item with worry level #{item.value} is thrown to monkey #{m.test_true}."
+      if item % m.divisible == 0
+        debug "    Current worry level is divisible by #{m.divisible}."
+        debug "    Item with worry level #{item} is thrown to monkey #{m.test_true}."
         monkeys[m.test_true].items.push(item)
       else
-        trace "    Current worry level is not divisible by #{m.divisible}."
-        trace "    Item with worry level #{item.value} is thrown to monkey #{m.test_false}."
+        debug "    Current worry level is not divisible by #{m.divisible}."
+        debug "    Item with worry level #{item} is thrown to monkey #{m.test_false}."
+        debug
+
         monkeys[m.test_false].items.push(item)
       end
     end
   end
 
-  puts "After round #{round}, the monkeys are holding items with these worry levels:"
-  puts monkeys.map { |m| "Monkey #{m.id}: " + m.items.join(", ") }.join("\n")
+  debug "After round #{round}, the monkeys are holding items with these worry levels:"
+  debug monkeys.map { |m| "Monkey #{m.id}: " + m.items.join(", ") }.join("\n")
+  debug
 end
 
-puts monkeys.map { |m| "Monkey 0 inspected items #{m.inspections} times." }.join("\n")
+debug "Total number of times each monkey inspects items over 20 rounds:"
+debug monkeys.map { |m| "Monkey #{m.id} inspected items #{m.inspections} times." }.join("\n")
+debug
 
 mb = monkeys.map(&:inspections).max(2).reduce(&:*)
 
-puts "Level of monkey business after 20 rounds of stuff-slinging simian shenanigans: #{mb}"
+puts "Level of monkey business after #{rounds} rounds of stuff-slinging simian shenanigans: #{mb}"
